@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDU D-EFT Scenario Test Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Open Sans', sans-serif; background: #f0f0f0; min-height: 100vh; padding: 30px 20px 50px; }
+  .page-wrapper { max-width: 950px; margin: 0 auto; background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
+  .header { background: linear-gradient(135deg, #8b0000 0%, #c0392b 40%, #a93226 70%, #7b241c 100%); position: relative; overflow: hidden; padding: 0 36px; display: flex; align-items: center; gap: 24px; min-height: 90px; }
+  .header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(255,255,255,0.07) 0%, transparent 60%); pointer-events: none; }
+  .header-logo { width: 68px; height: 68px; border-radius: 50%; background: #fff; border: 3px solid rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+  .header-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+  .header-text { flex: 1; }
+  .header-title { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 22px; color: #fff; letter-spacing: 0.5px; line-height: 1.2; }
+  .header-subtitle { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 10.5px; color: rgba(255,255,255,0.82); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 4px; }
+  .form-title-bar { background: #1a1a1a; color: #fff; text-align: center; padding: 13px 20px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 1.5px; text-transform: uppercase; }
+  .form-body { padding: 28px 36px 36px; }
+  .top-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 28px; }
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-group label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #555; }
+  .field-group input { padding: 9px 13px; border: 1.5px solid #ddd; border-radius: 5px; font-size: 14px; font-family: 'Open Sans', sans-serif; color: #1a1a1a; outline: none; transition: border-color 0.2s; width: 100%; }
+  .field-group input:focus { border-color: #c0392b; }
+  .score-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .score-table th { background: #2c2c2c; color: #fff; padding: 10px 14px; text-align: left; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.8px; text-transform: uppercase; }
+  .score-table th:nth-child(2), .score-table th:nth-child(3) { text-align: center; width: 110px; }
+  .score-table td { border: 1px solid #e0e0e0; padding: 9px 14px; vertical-align: middle; color: #2c2c2c; line-height: 1.5; }
+  .score-table td:nth-child(2) { text-align: center; font-weight: 700; color: #444; background: #fafafa; width: 110px; }
+  .score-table td:nth-child(3) { text-align: center; width: 110px; background: #fff; }
+  .score-table tr:hover td { background: #fef6f6; }
+  .score-table tr:hover td:nth-child(2) { background: #f5eded; }
+  .section-row td { background: #8b0000 !important; color: #fff !important; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 12.5px; letter-spacing: 2px; text-transform: uppercase; padding: 9px 14px !important; text-align: center !important; }
+  .score-select { width: 80px; padding: 6px 8px; border: 1.5px solid #ddd; border-radius: 5px; font-size: 14px; font-family: 'Open Sans', sans-serif; font-weight: 600; text-align: center; outline: none; cursor: pointer; background: #fff; color: #1a1a1a; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 6px center; padding-right: 24px; }
+  .score-select:focus { border-color: #c0392b; background-color: #fff8f8; }
+  .total-row td { background: #1a1a1a !important; color: #fff !important; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 14px; padding: 13px 14px !important; letter-spacing: 0.5px; }
+  .total-row td:nth-child(2) { text-align: center !important; background: #1a1a1a !important; color: #aaa !important; }
+  .total-score-cell { text-align: center !important; background: #1a1a1a !important; }
+  #total-display { font-size: 26px; font-weight: 800; color: #2ecc71; font-family: 'Montserrat', sans-serif; }
+  .result-bar { margin-top: 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .score-meter { flex: 1; min-width: 200px; }
+  .meter-track { height: 10px; background: #e8e8e8; border-radius: 99px; overflow: hidden; }
+  .meter-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #c0392b, #e74c3c, #2ecc71); border-radius: 99px; transition: width 0.5s ease; }
+  .meter-label { font-size: 11px; color: #888; margin-top: 5px; text-align: right; }
+  .result-badge { padding: 8px 22px; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; background: #e8e8e8; color: #888; transition: all 0.3s; }
+  .result-badge.pass { background: #d5f5e3; color: #1e8449; border: 1.5px solid #27ae60; }
+  .result-badge.fail { background: #fdecea; color: #922b21; border: 1.5px solid #c0392b; }
+  .actions { display: flex; gap: 12px; margin-top: 26px; justify-content: flex-end; flex-wrap: wrap; }
+  .btn { padding: 10px 24px; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.8px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+  .btn-reset { background: #f0f0f0; color: #444; }
+  .btn-reset:hover { background: #e0e0e0; }
+  .btn-print { background: #1a1a1a; color: #fff; }
+  .btn-print:hover { background: #333; }
+  .btn-sheets { background: #27ae60; color: #fff; }
+  .btn-sheets:hover { background: #1e8449; }
+  #status-msg { font-size: 13px; font-weight: 600; text-align: right; margin-top: 8px; min-height: 20px; display: none; }
+  @media print { body { background: #fff; padding: 0; } .page-wrapper { box-shadow: none; } .actions { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <div class="header">
+    <div class="header-logo">
+      <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCACXAJcDASIAAhEBAxEB/8QAHAABAAIDAQEBAAAAAAAAAAAAAAIGBAUHAQMI/8QAQBAAAQMDAQUFBwIEBAUFAAAAAQIDBAAFEQYHEhMhMTNBUVJxFCIyYYGRoRVCCBYjsSQ0csEXQ1OCo4OS0eHw/8QAHAEAAQUBAQEAAAAAAAAAAAAAAAECAwQFBgcI/8QANREAAQMCBAQFAQgBBQAAAAAAAQACEQMEBRIhMRNBUWEGInGBkQcUMkKhsdHh8BUkUnKS8f/aAAwDAQACEQMRAD8A56tSt9XvK6+Neb6/Mr70c7RXqajXDL68AEKW+vzK+9N9fmV96jShEBS31+ZX3pvr8yvvUaUIgKW+vzK+9N9fmV96jShEBS31+ZX3pvr8yvvUaUIgKW+vzK+9N9fmV96jShEBS31+ZX3pvr8yvvUaUIgKW+vzK+9N9fmV96jShEBS31+ZX3pvr8yvvUaUIgL6sqUXAN9X3pUWO1FKUKKpuvHO0V6mo1JztFepqNIpRslKUpEqUq4aN2f3XVWm592tziA7HeDTDC+XtJCSpSUnzY6eh+mT/wAJ9bexpeEKIZCm+L7D7SBJCcdSj/7qwLWsWhwaYKx3+IMMp1X0X12hzTBBMQYnny77ct1RqVk3O33C1vKZuUCVDWk4IeaKefqeRrE4jfnT96gOhgrWpvbUaHMMg8xqpUrcaY0xf9SyUsWa2PyATzeKd1pA8Ss8quT+za1yo36Vp/U8O46nj+9Ijb2608D1Q0o8lKT34J68/lNTt6lQS0fz6dVl3mN2VnUFOq/XnGuUdXR90dz+kxzWlZl3tdzs8hUe7W+VCdScEPNlI+h6H6Vg8Rvzp+9QkZTBWnTqMqtD6ZkHmNQpUrOstnu96fSxaLZLmuKOBwmyU/VXQferLd9l+srbFD64MeSriJbcYivhx1pSjhO+nu51I2jUeJa0kKncYpZW1QUq1VrXHkSAVTKVa9oOiJujWLWqZKZkuTUrDvBIKGXU4y3nrkA8894qqUlSk+k7K8QU+xv7e/oivbPzMMwR2MFKUpUauKbHailGO1FKcFDU3XjnaK9TUak52ivU1GkUo2Sh5DNK8WcIUfAUiVfpfYhY7SvS+lbcq4LYu/tAv6E7uQ62CpCkfLkr8Zqg6thXDU+2TUItjqUTUS3S06XS2QloBAAWOY6V1nZBarIj+U2VT3E3202gucPHuvMP8sZPlUnu6Z+dc40Gd/a/fVq68WYf/NXVXzAKFvS1iP7C+e8EvXi+xbEGkFwLoPXXmPXSOkLKbO2eA1wXLZJvDPTL8ZqWD/3D3j96NTtoS8g7K7e67/1FWVaSD4/FiugW/XE+yXEwLv8Aym28BlKP1dTCyD0yFpI6fOvjrPaPPTCXIttzQ3HSSlTkGGmQCfDiKWE/UCqD61GmNXu+P3hIzHnPOtpTk8xIn4KpczT21bUjAi3h5iyW5QwqOkpZRj5tt5Ur0Uaz3NidvctbSIN+kNXFvnxXWhwVHuwlPvIx3EEmtxs41c5qmC9/jJMt2HluQmS2lLxPxIWQkn3Vc056ZqOgNYX26apMOa3G9iy4Ht1AT7KU+Ks8znkQeZobUt3RnBJdpry/ZQv8QYmyRb5aTW6w0AA/Myq7Jte2XT7RjriJ1FDHupK20TRgdOuHB6Vrzedbg7idmNubeH7/ANCdzn74qx622l3O3aubs8G6Ox9wl1XBaQoJSokIQsKOM7oye/JFXB3aK7bLCyu4uMTZsobsZo7kZTh8Sd5QSkDvqMXVDNlzuA76j27Kw3HH5c1S1plx6S2fUbLlMqTtWuqPZHQ5Z46hgoabRDG6fEp9/H1rZfw3srtm1a6Wx7cU4qE4h0jmFKQ4g559ep5nxq3SZK5yRNfLCFOfA2wpTgx81kAH6CqxsiG7/ELcAOhYk5/8dSUXNe9lRridef8AKt2+KPvLO7tzSYxopkw0RqCN+qxdvun7VF0LKjRLg5MuNiuftk1RGADLWpW788D+3zrg1fpLb1arG3pjW0WHOedu7q490mpx7raAQlDf4Ucdfe9K/NieaQR4U7xA3/VZuoB1/vx2XT/SauXYM6kSPI9wAHIaQP37yvaUpWEvUVNjtRSjHailOChqbrxztFepqNSc7RXqajSKUbJXisFJB6Y517SkSr9TbFbZGmMaKvUi7NovMa0uoXFPWRFJIQR80qPz6n5VRNJD2bbbfIx5EyJqcf8AqZrdbILNeLzpfROpLetsyLPMciutcTdU5EKwFKGe9OOY7wT8hWovCFWf+I2Yl0bgfuBPPyvNgg/c11l64Ot7Z4dOgHovnfCqLm4hjNqWgE5yI2Maflt8LtTdhjXiMlBDbLucqdDSSpYx0JIrTXTSdzguuvWxlK1ISU70tW8yoeJbQlOflzyKuGmOia3kjHBVnmKirYdSr+fZ3ULlGXL6em4X57vWl/abomYNPSbfMQpKES7ZMUgoBPPkB48zz5DxNYVg05MuaLzCE68uPRrm+XeC4lqRKyhr4yByPhjxHWt3r9qazqWTI1Ub4LQl8G3PWuQlDSUEH3VpGFBQ+oNYMe92BQ1E3c3LyzFuU0PMriqLbu6G0ABSs8iSk8u/rSjwtUhga8vDuYboOfX8tFRPiikzOKoDC3YOME6x7D5U7Vpm6Q91uyaeYhrUc7094vKBP7wMAk/XryOatemNmgjzHrxem0y7moZXIfBycdEjlyA7gOVbHZFDvkdUkyFzjYFNINvRcXEOyCrHNe8nlukf7V0OZ/lXPSoneH6VGoWvqZx20B9evyrdDF6lzSDwzLPXf/zouUX5O7O3ATgDAGTyqp7FE+07ebzITzS1HkflTaf9qt1/UE3JS1ckpyo+g51V/wCF1tcvWmpLuRlPASne+bjqlf2SKMoFZjR1/RdNg8tsL2seTA3/ALH+F8tv9qj23SutJ0K6NSrlPnRjPbSOcaMT7jfqTvKP9uQr87pGEgfKu1bZ7LetPbN58i6uNmdqG9pclo4m8Wmk5LaDjqo81H/Vjuriw6VF4icDdwHTAAn+8ui736R0nNwQvcwNzPcY+N+/XulKUrBXqamx2opRjtRSnBQ1N1452ivU1GpOdor1NRpFKNkpSlIlXWtj4vt90k/bNPpdTeNPS/1CCtK90OoWCFs57lHmRnkSADyzW9/iCjy4+oNO6vMV2M9PhNqebWndUh9ohRSR3HCsf9tc/wBjF6XbNTSLXxpcdq8xzE9oi54jDnVDgxzwCf8A55V2fUFs1XqvZldrFqe3ujUNhWmXFkBGUTEAHJQvorKd4Y6805Ga6ugTd4VlkTTPvHbqF4Li7WYF434zmkU7gan8Jkaz080meYHoumaMlNToUacwQWpDSXUEeChmrDI7FVcg/hj1A3ctNLsrjgMi2K/pgnmpheSk/Q5H2rr8jsVVYt3ipSDguMxWxdYXlS3d+E6enI+4hcw2rwG5FpTcjN9jetazIacLfESTy90p784AqjNXS+Pt3RibCjWti9TGm5spxkupiqW0kJAR3FScEE9M11m/MMym1xpLSXmXRuLQoZCge6uU7M4iZWrkw5vDkRmXHXW2y8pTJWgAIUjPxlIwOfQDNa1k5jqYLxPDJInkIJ07zJ80j3XIYqypTrxScRxQAY5kEDzc4ggeWD3jbtWj7RFsFhg2SEXDHgshlsuHKiB3n6k1uZn+Vc9KxYPM5NZUz/KuelZ5cXSTuVvNaGgNbsFxLapO/TrPcZAVhami03/qXyH+9R2FRblZtkF+vtqhvSrjNfUmGy2nKl7gDaSM8viKjz5cqq+2+W/c9UwtLWxJelFxOW0/uec5IT9AcnwzXSdSQtTWaw2LZ7opD7BRFT7ddUoIRGbHxK3vMo7xCRzJx0GTVTD6XGvc2kN67Lp8Wqf47w2KUHiXDpgb5RoPzgg9J6Lhe24XSy22zaPuilu3Bx5y63J8r3kqeXyCEqPMhIwM9+M99c4qy7Vr+dR69lSWxIEWE0iFHL+eIpKBjeVnnknnzqtVg4pcG4un1CZ1XtXgfCxhmCUKAblMSR66pSlKz11qmx2opRjtRSnBQ1N1452ivU1GpOdor1NRpFKNkpSlIlWXZ7lLs92iXaCrdkxHQ6jnyVjqk/IjI+tfpjQep9XXiSzq3TapV709LdCZ1tfWA/Bc5b4b3sBSQTkYPLmOYwR+ddK6Vvuq5Solkgrf3eTjyvdaa5fuV/t1rr21J+623RdgjQb6lUiAlTNwTblKbaKzjcXkHB6Y+tb+DXTrUPe8SwjaJn01HyF5L9RsIoY1Xt7eg4C4B3zEZRv5oa7fkDoTpsZH11bHe2S7YWL5bAldqnKU4Y6FjIbURxWiO7BIUnPLoO41er5t20hHSW4ES63FSvhUljhIV6FeM8+XIVyTWVhss7Ski76RlwbgiBHQ/dH3pjq7kSsYPEQobqUhR5BJPStttQuNrutjcs0mXFZm2y3QpdoWMYcC2UpejZHQ5SFgHv8ACkFZ9LNkIA3HP4Psq1TC7S/Nv9qa57wMrj906EQXN1P4gdwYknoLLqLaPqJhN0dXodUMWoMqmIlTP6jYdOGyEpHvAkdR0rSQrzfdLR39bLjaVkQ5+eAw3ccqSokFaW0gZ3gMBQ7sU1Lr6LqGyXq1fpM2Y5MtkZmFLYiK3m1jcUtpfigOJKkq5/EoVT7hGu83QdqsDenbwHoUyTIW77IrcUl0AADlnIxzpxu6jMwY8kEduvp0Vah4bsK3Ddc27WEOG7nbZQZEu/3advaT2FnafqS32BN9uuhEpgFtDylR7kguttrOEOKaUN5KD3E1mOba7E5px+4KsV9YJbV7OXoZLDzg6IDqcp6+Ncv1VqO3qs12lCz32LervbYtseakxuHGjoaxvFCzzUVbowOWOdL/AHFL+zS12KDqmPcLmHW4EaHbnnEpkRlHIRJZUAlK0LIAUOZo+11BIDp07fwkb4csqgYX0MsujQugCATuXCAdJ0kajTVWP+HmzG86jueu7y83KmNKcLDCVAuKdUPfc3c5AAO4nPifCvtr3WGsNNJd1Tqx2RbWHd9q0WRhzPEWRgKfUn3QAD0JJJ58sAHR6m0npy2Rrhc4V4aa/lu3ogSBAUtqU7dCeRWojCknJ+E9AR3VDSypl62XXWxztQNN3K5OD2E3MFbaGwADhZ5AqOcdMYB51btLr7PSfRAAcRvofXmI6c1mY3g7cUvKWIucXUWFoLNWwNIgAHMADmO0AyJMRwwuyJLz0uW4XJEhxTrqj3qJya9ra6m01e9Ly0w73BXHUcbjg95tz/SrofTrWqrl3hwcQ7de72dSjUoNdQcCyNCNvySlKUxWVNjtRSjHailOChqbrxztFepqNSc7RXqajSKUbJV52V6AkatkOz5jchFmiArd4KcuySP+W2O/wJ+npRq+iJVyZCUxbpOjJT8KWpCkAegBqSiWNeC8SFn4rSu61s6nZvDXnmeQ5x36Hku9TjqlUZNuiaSuVlsrXJqGzFVzHi4pI94/Lp69awQWpcJ+BJSQhxBbWkjBSfTuIP8AaqZsZveqH9plhgr1JdHY7kj+o05IUpKkhJODnu5VcZwhWZUq+axuCrVGkSXXWIqRvS5IK1EEJ/aD4nnz6CtZrhVbnbttr7fuvNrig/Dqxt6wAdAcMskkkuGxkk+WZ16lYdssOo5tsjaRbujkhDq1ux7cypLLLqh76it0jJOASAendXSLLsy0xJ0q7ZNQQLHZb44rLbkGYXJDZxyUor+InvSPdIrkre3G4W25IVpXTcOJbkH3xIUVPvj5r/afvVp0KdEaqtM3UDWnnpV8aeKmrRKvZUlw9d9QWocgT0Oc4+dauGmyqtNCoQXcjGvpJIgLkPFrfEVm5mIUWuZTG4zQJkmSxgMuPedt+S8buWsdks5Fj1BHXPsS1n2Z1s4T16tKPwnvLavp41dZO1bScCzJuLNxenOrB4cNoFL2R3LzyQPmfpmt5phes9QMyGteWCxRNOraO808pK1q8MBKlJSB4k56Yqrac0RsqTqwSUOSpMV1wiE1MX/gVrT8QbWR/WwcYSSeh605+H3VFxbRIcPmPfms1mPYHiTRcYlTdSq8wIHE9R+EnmdPWYVftVo1ptmuzdzvL67XpplWW93IRjwaB+NXi4eQ7vCrjrnQthlWWLatGWHTU6ZGQW1BczhSkJH7krTzKs5yVVtNoFz2gWieqPbbDZLjYHEcNDQcShe5jBQtK1JH/tyMd1ct13O0RoBdqu9uskj9ZcVxF21q+KUmG4OY5JUcpz4HHyq1StLa1p8e4cHE+jvYiQQqFzjeLYzdNscLpmk1v3WtJZp1DhoT3Mem6wJel7gu3JsrFxlJtjU7izor4CgmSBuOKQ4B/U6Ec/Wsi6oQlvhNoAbSndSgDOAOQFYNu23t3Z0s62sfCZUo8OZbyd9kHPxJPxD/APYqzx22/aLdqSxTmbva2pbThkR/iaAWM8RHVOB39PSsCKb5dTMj9PbovSzVvLbLSvWFrhtMQ4/8hoSe+vYrVWY6ififpMvTFx1BYHMByMuOctDzNLVgJI64zj0POqBtU0Q9oy8pS24XrbK96MtRG+jIzw1gdFCvvtj1Bq4bRr/a3dR3NuKxKIaaQ8UJSggEAYxy51Qy2tbvFekPPL8XFlR/NU7qpTg0zJI5/wB5LpfD1lfZ2XrC1tN4BLRJzSJB5AOHUDXYzpH0pSlZy7pTY7UUox2opTgoam68c7RXqajUnO0V6mo0ilGyUpSkSrcaNv8A/K+oGr6hhT70ZpzgIHQuEYTnwFau7Trjfbs/eL1JXKmvq3lKUeSR3JSO4Dwr50qTiuyZJ03VE4dQN0bstl8Bs9gSY+SgGOleIZYXLZW8tTSA4kLcQcKSnIyQfTNe0PMYNMBgyrb2B7S0r9Capkf4v9KmOux9FWG1tTS20ohuS2RhCAr96lrC88+QSR1Vmub2fajc519eRqdtEjTE9SWV28AJRCbHJC2sfCpHI5H06Cq49q2+r0M5ox19T9tU8hxoqV7zSUnJR809MeFaXdBRudxGK377G6lXhcHyhgGg6rynw19Nra1bdtxEcR1UkZjqcp1BHT05R3M91v4lPaO1ZpvUs1yTCsMdMq3T1EhQKxlkoUPMnOU55FJHQ1wOMwgAOkEuKGSVHJzVl1XrK+6ks1rsEl1TVtt7KEFsHt1pHxq+XgK0QGAAO6q2MYg29rCo0RoJ7nqtj6f+Fq/h+yfQrumXEtB1yjkB/eiHnWfpm+XfS91Tc7DMVGfHxozlt0eCk9/96wKVlNe5hlp1XdXNtSuqZpVmhzTuCtxrfUKdU6qevvs6o7sllv2hs9EuJGDg946EGtPSlLUeaji47lMsrSnZUG29P7rRA9OQ9kpSlMVpTY7UUox2opTgoam68c7RXqajUnO0V6mo0ilGyUpSkSpSlKEJSlKEJSlKEJSlKEJSlKEJSlKEJSlKEKbHailGO1FKcFDU3UltOb6vd7/Go8Jzy/mlKWEgqGE4Tnl/NOE55fzSlJCXiFOE55fzThOeX80pRCOIU4Tnl/NOE55fzSlEI4hThOeX804Tnl/NKUQjiFOE55fzThOeX80pRCOIU4Tnl/NOE55fzSlEI4hThOeX804Tnl/NKUQjiFOE55fzThOeX80pRCOIVNlpwOD3M/UUpSnAKGpUMr//2Q==" alt="Santosh Simulation Center Logo">
+    </div>
+    <div class="header-text">
+      <div class="header-title">Simulation Center</div>
+      <div class="header-subtitle">SDU D‑EFT Scenario Test Sheet</div>
+    </div>
+  </div>
+
+  <div class="form-title-bar">Candidate Assessment Record</div>
+
+  <div class="form-body">
+
+    <div class="top-grid">
+      <div class="field-group">
+        <label>Candidate Name</label>
+        <input type="text" id="candidate-name" placeholder="Enter full name">
+      </div>
+      <div class="field-group">
+        <label>Assessor Name</label>
+        <input type="text" id="assessor-name" placeholder="Enter assessor name">
+      </div>
+      <div class="field-group">
+        <label>Assessment Date</label>
+        <input type="date" id="assessment-date">
+      </div>
+    </div>
+
+    <table class="score-table">
+      <thead>
+        <tr>
+          <th>Assessment Item</th>
+          <th>Max Marks</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="section-row"><td colspan="3">Section 1 — Initial Assessment &amp; CPR</td></tr>
+        <tr><td>AVPU</td><td>4</td><td><select class="score-select" data-max="4"></select></td></tr>
+        <tr><td>Look</td><td>2</td><td><select class="score-select" data-max="2"></select></td></tr>
+        <tr><td>Feel</td><td>2</td><td><select class="score-select" data-max="2"></select></td></tr>
+        <tr><td>Voice prompt: "This patient is in cardiac arrest"</td><td>2</td><td><select class="score-select" data-max="2"></select></td></tr>
+        <tr>
+          <td>Voice prompt: "Call for Help"<br><span style="color:#888;font-size:12px;">"Call an ambulance" or "Dial 108" — "Bring me a defibrillator"</span></td>
+          <td>4</td><td><select class="score-select" data-max="4"></select></td>
+        </tr>
+        <tr><td>Start CPR</td><td>2</td><td><select class="score-select" data-max="2"></select></td></tr>
+        <tr><td>Start Timing</td><td>2</td><td><select class="score-select" data-max="2"></select></td></tr>
+        <tr><td>Technique</td><td>10</td><td><select class="score-select" data-max="10"></select></td></tr>
+        <tr><td>100–120 compressions per minute</td><td>6</td><td><select class="score-select" data-max="6"></select></td></tr>
+        <tr><td>Reassessment every 2 minutes &lt;10s</td><td>4</td><td><select class="score-select" data-max="4"></select></td></tr>
+
+        <tr class="section-row"><td colspan="3">Section 2 — Team Management &amp; Communication</td></tr>
+        <tr><td>Manage team with hover</td><td>5</td><td><select class="score-select" data-max="5"></select></td></tr>
+        <tr><td>Teach helper CPR</td><td>1</td><td><select class="score-select" data-max="1"></select></td></tr>
+        <tr><td>Changing compression roles every TWO minutes</td><td>1</td><td><select class="score-select" data-max="1"></select></td></tr>
+        <tr><td>Communication skills</td><td>5</td><td><select class="score-select" data-max="5"></select></td></tr>
+
+        <tr class="total-row">
+          <td>Total Score</td>
+          <td>50</td>
+          <td class="total-score-cell"><span id="total-display">0</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="result-bar">
+      <div class="score-meter">
+        <div class="meter-track"><div class="meter-fill" id="meter-fill"></div></div>
+        <div class="meter-label" id="meter-label">0 / 50 — 0%</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-reset" onclick="resetForm()">↺ &nbsp;Reset</button>
+      <button class="btn btn-sheets" onclick="submitToSheets()">Submit</button>
+    </div>
+    <div id="status-msg"></div>
+
+  </div>
+</div>
+
+<script>
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrGMiUyWH2vfMG8kwmoCjYQPWrDvlDp0GKkpm2cjVK83IJEJkhH_yzXWsLRlRJid-L/exec";
+  var PASS_THRESHOLD = 35;
+  var selects = document.querySelectorAll('.score-select');
+
+  selects.forEach(function(sel) {
+    var max = parseInt(sel.dataset.max) || 10;
+    for (var i = 0; i <= max; i++) {
+      var opt = document.createElement('option');
+      opt.value = i; opt.textContent = i;
+      sel.appendChild(opt);
+    }
+    sel.addEventListener('change', updateTotal);
+  });
+
+  function updateTotal() {
+    var total = 0;
+    selects.forEach(function(s) { total += parseInt(s.value) || 0; });
+    document.getElementById('total-display').textContent = total;
+    var pct = Math.round((total / 50) * 100);
+    document.getElementById('meter-fill').style.width = pct + '%';
+    document.getElementById('meter-label').textContent = total + ' / 50 — ' + pct + '%';
+
+  }
+
+  function resetForm() {
+    document.getElementById('candidate-name').value = '';
+    document.getElementById('assessor-name').value = '';
+    document.getElementById('assessment-date').value = '';
+    selects.forEach(function(s) { s.value = 0; });
+    updateTotal();
+    showStatus('');
+  }
+
+  function submitToSheets() {
+    var scores = [];
+    selects.forEach(function(s) { scores.push(parseInt(s.value) || 0); });
+    var total = scores.reduce(function(a,b){ return a+b; }, 0);
+    var labels = ['AVPU','Look','Feel','Voice prompt: cardiac arrest','Voice prompt: call for help','Start CPR','Start Timing','Technique','100-120/min','Reassessment every 2 min','Manage team with hover','Teach helper CPR','Changing compression roles','Communication skills'];
+    var scoresObj = {};
+    labels.forEach(function(lbl, i){ scoresObj[lbl] = scores[i]; });
+    var payload = {
+      candidateName:  document.getElementById('candidate-name').value  || 'N/A',
+      assessorName:   document.getElementById('assessor-name').value   || 'N/A',
+      assessmentDate: document.getElementById('assessment-date').value || new Date().toISOString().split('T')[0],
+      total: total,
+      result: total >= PASS_THRESHOLD ? 'Pass' : 'Fail',
+      scores: scoresObj
+    };
+    showStatus('✓ Saved to Google Sheets successfully!', '#27ae60');
+    fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      .catch(function(){});
+  }
+
+  function showStatus(msg, color) {
+    var el = document.getElementById('status-msg');
+    el.textContent = msg; el.style.color = color || '#27ae60';
+    el.style.display = msg ? 'block' : 'none';
+  }
+</script>
+</body>
+</html>
